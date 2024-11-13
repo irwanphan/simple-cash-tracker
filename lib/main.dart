@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import './widgets/transaction_list.dart';
+import './widgets/expense_chart.dart';
 
 void main() => runApp(ExpenseTrackerApp());
 
@@ -18,34 +20,14 @@ class ExpenseTrackerApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   final List<Transaction> transactions = [
     Transaction('Makan Siang', 50000, 'Makanan'),
     Transaction('Transportasi', 20000, 'Transportasi'),
     Transaction('Belanja', 150000, 'Belanja'),
   ];
-
-  // Fungsi untuk navigasi ke halaman tambah transaksi
-  Future<void> _navigateToAddTransactionPage() async {
-    final newTransaction = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AddTransactionPage()),
-    );
-
-    // Jika ada transaksi baru yang dikembalikan, tambahkan ke daftar transaksi
-    if (newTransaction != null) {
-      setState(() {
-        transactions.add(newTransaction);
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +37,12 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: _navigateToAddTransactionPage,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddTransactionPage()),
+              );
+            },
           ),
         ],
       ),
@@ -68,26 +55,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class TransactionList extends StatelessWidget {
-  final List<Transaction> transactions;
-
-  const TransactionList({super.key, required this.transactions});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: transactions.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(transactions[index].title),
-          subtitle: Text(transactions[index].category),
-          trailing: Text('Rp ${transactions[index].amount}'),
-        );
-      },
     );
   }
 }
@@ -169,50 +136,6 @@ class Transaction {
   final String category;
 
   Transaction(this.title, this.amount, this.category);
-}
-
-class ExpenseChart extends StatelessWidget {
-  final List<Transaction> transactions;
-
-  const ExpenseChart({super.key, required this.transactions});
-
-  @override
-  Widget build(BuildContext context) {
-    List<PieChartSectionData> sections = _generateChartSections();
-
-    return PieChart(
-      PieChartData(
-        sections: sections,
-        centerSpaceRadius: 40,
-        sectionsSpace: 2,
-      ),
-    );
-  }
-
-  List<PieChartSectionData> _generateChartSections() {
-    Map<String, int> categoryTotals = {};
-    for (var transaction in transactions) {
-      if (categoryTotals.containsKey(transaction.category)) {
-        categoryTotals[transaction.category] =
-            categoryTotals[transaction.category]! + transaction.amount;
-      } else {
-        categoryTotals[transaction.category] = transaction.amount;
-      }
-    }
-
-    return categoryTotals.entries.map((entry) {
-      final color = Colors.primaries[
-          categoryTotals.keys.toList().indexOf(entry.key) %
-              Colors.primaries.length];
-      return PieChartSectionData(
-        color: color,
-        value: entry.value.toDouble(),
-        title: '${entry.key}: Rp${entry.value}',
-        radius: 50,
-        titleStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-      );
-    }).toList();
-  }
 }
 
 class ExpenseData {
