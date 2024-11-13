@@ -18,14 +18,34 @@ class ExpenseTrackerApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final List<Transaction> transactions = [
     Transaction('Makan Siang', 50000, 'Makanan'),
     Transaction('Transportasi', 20000, 'Transportasi'),
     Transaction('Belanja', 150000, 'Belanja'),
   ];
+
+  // Fungsi untuk navigasi ke halaman tambah transaksi
+  Future<void> _navigateToAddTransactionPage() async {
+    final newTransaction = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddTransactionPage()),
+    );
+
+    // Jika ada transaksi baru yang dikembalikan, tambahkan ke daftar transaksi
+    if (newTransaction != null) {
+      setState(() {
+        transactions.add(newTransaction);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +55,7 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddTransactionPage()),
-              );
-            },
+            onPressed: _navigateToAddTransactionPage,
           ),
         ],
       ),
@@ -101,10 +116,11 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
 
     final title = _titleController.text;
     final amount = int.tryParse(_amountController.text) ?? 0;
-    // final category = _selectedCategory;
+    final category = _selectedCategory;
 
     if (title.isNotEmpty && amount > 0) {
-      Navigator.pop(context);
+      final newTransaction = Transaction(title, amount, category);
+      Navigator.pop(context, newTransaction);
     }
   }
 
