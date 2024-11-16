@@ -52,18 +52,30 @@ class _MainPageState extends State<MainPage> {
         index: _selectedIndex,
         children: _pages,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.insights), label: 'Insights'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet), label: 'Wallet'),
-          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
-        ],
-      ),
+      bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Colors.blueGrey[700]!, // Warna border
+                width: 2.0, // Ketebalan border
+              ),
+            ),
+          ),
+          child: BottomNavigationBar(
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.insights), label: 'Insights'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.account_balance_wallet), label: 'Wallet'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.more_horiz), label: 'More'),
+            ],
+            selectedItemColor: Colors.blueGrey[900],
+            unselectedItemColor: Colors.blueGrey[700],
+          )),
     );
   }
 }
