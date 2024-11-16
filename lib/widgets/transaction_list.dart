@@ -12,10 +12,22 @@ class TransactionList extends StatelessWidget {
     return ListView.builder(
       itemCount: transactions.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(transactions[index].title),
-          subtitle: Text(transactions[index].category),
-          trailing: Text('Rp ${transactions[index].amount}'),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              child: ListTile(
+                title: Text(
+                  transactions[index].title,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(transactions[index].category),
+                trailing: Text('Rp ${transactions[index].amount}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w800, color: Colors.green)),
+              )),
         );
       },
     );
