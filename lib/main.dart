@@ -70,8 +70,7 @@ class _MainPageState extends State<MainPage> {
                   icon: Icon(Icons.insights), label: 'Insights'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.account_balance_wallet), label: 'Wallet'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.more_horiz), label: 'More'),
+              BottomNavigationBarItem(icon: Icon(Icons.face), label: 'About'),
             ],
             selectedItemColor: Colors.blueGrey[900],
             unselectedItemColor: Colors.blueGrey[700],
