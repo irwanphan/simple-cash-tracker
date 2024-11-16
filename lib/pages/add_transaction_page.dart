@@ -1,4 +1,3 @@
-// lib/pages/add_transaction_page.dart
 import 'package:flutter/material.dart';
 import '../models/transaction.dart';
 
@@ -29,7 +28,10 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     final category = _selectedCategory;
 
     if (title.isNotEmpty && amount > 0) {
+      // Buat transaksi baru
       final newTransaction = Transaction(title, amount, category);
+
+      // Kembalikan transaksi baru ke halaman sebelumnya
       Navigator.pop(context, newTransaction);
     }
   }
@@ -37,18 +39,18 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Tambah Transaksi')),
+      appBar: AppBar(title: const Text('Tambah Transaksi')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(labelText: 'Judul Transaksi'),
+              decoration: const InputDecoration(labelText: 'Judul Transaksi'),
             ),
             TextField(
               controller: _amountController,
-              decoration: InputDecoration(labelText: 'Jumlah'),
+              decoration: const InputDecoration(labelText: 'Jumlah'),
               keyboardType: TextInputType.number,
             ),
             DropdownButton<String>(
@@ -64,7 +66,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
             ),
             ElevatedButton(
               onPressed: _submitTransaction,
-              child: Text('Simpan Transaksi'),
+              child: const Text('Simpan Transaksi'),
             ),
           ],
         ),
