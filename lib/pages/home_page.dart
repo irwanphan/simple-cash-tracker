@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Catatan Keuangan'),
+        title: const Text('Cashflow'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -48,11 +48,21 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          Expanded(child: TransactionList(transactions: _transactions)),
           Container(
             height: 200,
             child: ExpenseChart(transactions: _transactions),
           ),
+          Expanded(child: LayoutBuilder(builder: (context, constraints) {
+            double width =
+                constraints.maxWidth > 640 ? 640 : constraints.maxWidth;
+            return Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                width: width, // Maksimal lebar 640 atau selebar layar
+                child: TransactionList(transactions: _transactions),
+              ),
+            );
+          }))
         ],
       ),
     );
