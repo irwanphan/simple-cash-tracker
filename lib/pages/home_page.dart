@@ -58,12 +58,17 @@ class _HomePageState extends State<HomePage> {
             return Align(
               alignment: Alignment.topCenter,
               child: SizedBox(
-                width: width, // Maksimal lebar 640 atau selebar layar
+                width: width,
                 child: TransactionList(transactions: _transactions),
               ),
             );
-          }))
+          })),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _navigateToAddTransactionPage,
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.add),
       ),
     );
   }
