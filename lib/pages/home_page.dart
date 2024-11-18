@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          Container(
+          SizedBox(
             height: 200,
             child: ExpenseChart(transactions: _transactions),
           ),
