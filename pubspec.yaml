@@ -36,7 +36,7 @@ dependencies:
   url_launcher: ^6.3.1
   flutter_tabler_icons: ^1.43.0
   sqflite: ^2.4.1
-  path: ^1.9.1
+  path: ^1.9.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

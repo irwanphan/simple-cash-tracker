@@ -3,6 +3,7 @@ import '../models/transaction.dart';
 import '../widgets/transaction_list.dart';
 import '../widgets/expense_chart.dart';
 import 'add_transaction_page.dart';
+import '../database/db_helper.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,11 +14,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // Daftar transaksi
-  final List<Transaction> _transactions = [
-    Transaction('Makan Siang', 50000, 'Makanan'),
-    Transaction('Transportasi', 20000, 'Transportasi'),
-    Transaction('Belanja', 150000, 'Belanja'),
-  ];
+  final DBHelper _dbHelper = DBHelper();
+  List<Transaction> _transactions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTransactions(); // Muat data dari database
+  }
+
+  Future<void> _loadTransactions() async {
+    final transactions = await _dbHelper.fetchTransactions();
+    setState(() {
+      _transactions = transactions;
+    });
+  }
 
   // Fungsi untuk membuka halaman tambah transaksi
   Future<void> _navigateToAddTransactionPage() async {

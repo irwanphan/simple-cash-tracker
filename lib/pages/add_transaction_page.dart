@@ -26,12 +26,15 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     final title = _titleController.text;
     final amount = int.tryParse(_amountController.text) ?? 0;
     final category = _selectedCategory;
+    final date = DateTime.now();
 
     if (title.isNotEmpty && amount > 0) {
-      // Buat transaksi baru
-      final newTransaction = Transaction(title, amount, category);
-
-      // Kembalikan transaksi baru ke halaman sebelumnya
+      final newTransaction = Transaction.create(
+        title: title,
+        amount: amount,
+        category: category,
+        date: date,
+      );
       Navigator.pop(context, newTransaction);
     }
   }
