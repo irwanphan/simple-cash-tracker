@@ -14,7 +14,10 @@ class DBHelper {
 
   // Inisialisasi database
   Future<Database> get database async {
-    if (_database != null) return _database!;
+    if (_database != null) {
+      print('database found');
+      return _database!;
+    }
     _database = await _initDatabase();
     return _database!;
   }
@@ -23,17 +26,27 @@ class DBHelper {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'transactions.db');
 
+    // Tambahkan log untuk memastikan database ada atau tidak
+    print('Database path: $path');
+
+    // Pastikan database lama dihapus hanya jika diperlukan
+    final dbExists = await databaseExists(path);
+    if (!dbExists) {
+      print('Database does not exist, creating a new one...');
+    }
+
+    // Buat database baru jika tidak ada
     return await openDatabase(
       path,
       version: 1,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE transactions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, -- Auto-increment ID
-            title TEXT NOT NULL, -- Judul wajib diisi
-            amount INTEGER NOT NULL, -- Jumlah wajib diisi
-            category TEXT NOT NULL, -- Kategori wajib diisi
-            date TEXT NOT NULL -- Tanggal wajib diisi
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            amount INTEGER NOT NULL,
+            category TEXT NOT NULL,
+            date TEXT NOT NULL
           )
         ''');
       },
@@ -48,12 +61,14 @@ class DBHelper {
 
   // Ambil semua transaksi
   Future<List<Transaction>> fetchTransactions() async {
-    final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query('transactions');
-
-    return List.generate(maps.length, (i) {
-      return Transaction.fromMap(maps[i]);
-    });
+    try {
+      final db = await database;
+      final List<Map<String, dynamic>> maps = await db.query('transactions');
+      return maps.map((map) => Transaction.fromMap(map)).toList();
+    } catch (e) {
+      print('Error fetching transactions: $e');
+      return []; // Kembalikan daftar kosong jika terjadi error
+    }
   }
 
   // Hapus transaksi

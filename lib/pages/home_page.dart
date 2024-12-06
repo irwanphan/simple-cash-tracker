@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadTransactions() async {
     final transactions = await _dbHelper.fetchTransactions();
+    print('Loaded transactions: ${transactions.length}'); // Debugging
     setState(() {
       _transactions = transactions;
     });
