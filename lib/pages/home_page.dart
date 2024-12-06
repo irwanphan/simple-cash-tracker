@@ -38,11 +38,14 @@ class _HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) => const AddTransactionPage()),
     );
 
-    // Jika transaksi baru ada, tambahkan ke daftar transaksi
     if (newTransaction != null && newTransaction is Transaction) {
-      setState(() {
-        _transactions.add(newTransaction);
-      });
+      await _dbHelper
+          .insertTransaction(newTransaction); // Simpan transaksi ke database
+      _loadTransactions(); // Muat ulang data transaksi
+
+      // DEBUG: Hitung dan cetak jumlah record
+      // final count = await _dbHelper.countTransactions();
+      // print('Jumlah transaksi saat ini: $count');
     }
   }
 

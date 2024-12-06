@@ -15,7 +15,7 @@ class DBHelper {
   // Inisialisasi database
   Future<Database> get database async {
     if (_database != null) {
-      print('database found');
+      // print('database found'); // DEBUG:
       return _database!;
     }
     _database = await _initDatabase();
@@ -27,12 +27,12 @@ class DBHelper {
     final path = join(dbPath, 'transactions.db');
 
     // Tambahkan log untuk memastikan database ada atau tidak
-    print('Database path: $path');
+    // print('Database path: $path'); // DEBUG:
 
     // Pastikan database lama dihapus hanya jika diperlukan
     final dbExists = await databaseExists(path);
     if (!dbExists) {
-      print('Database does not exist, creating a new one...');
+      // print('Database does not exist, creating a new one...'); // DEBUG:
     }
 
     // Buat database baru jika tidak ada
@@ -66,9 +66,16 @@ class DBHelper {
       final List<Map<String, dynamic>> maps = await db.query('transactions');
       return maps.map((map) => Transaction.fromMap(map)).toList();
     } catch (e) {
-      print('Error fetching transactions: $e');
+      // print('Error fetching transactions: $e'); // DEBUG:
       return []; // Kembalikan daftar kosong jika terjadi error
     }
+  }
+
+  Future<int> countTransactions() async {
+    final db = await database;
+    final List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT COUNT(*) as count FROM transactions');
+    return Sqflite.firstIntValue(result) ?? 0; // Kembalikan jumlah record
   }
 
   // Hapus transaksi
